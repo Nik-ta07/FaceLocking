@@ -1,116 +1,83 @@
-Face Recognition System using ArcFace (ONNX) with 5-Point Face Alignment
+# 🔍 Face Recognition with ArcFace (ONNX) & 5-Point Alignment
 
-A CPU-optimized, research-quality face recognition pipeline that combines classical detection with modern deep embeddings. Designed for clarity, reproducibility, and real-world deployment on machines without GPU acceleration.
+A **CPU-only, research-grade face recognition system** built with **ArcFace embeddings** and **5-point facial landmark alignment**, designed for **clarity, robustness, and real-world deployment** on machines without GPU acceleration.
 
-Inspired by academic best practices and built around ArcFace embeddings with 5-point landmark alignment.
+> Accurate. Modular. Reproducible. No CUDA required.
 
-Overview
+---
 
-This project implements a complete face recognition pipeline:
+## ✨ Features
 
-Detect faces from a live camera stream
+- ⚙️ **CPU-Only Inference** – runs smoothly on laptops and low-resource machines  
+- 🧠 **ArcFace (ONNX, ResNet-50)** – 512-dimensional L2-normalized embeddings  
+- 📐 **5-Point Face Alignment** – similarity transform to canonical 112×112 faces  
+- 🎥 **Real-Time Recognition** – multi-face detection with temporal smoothing  
+- 🔓 **Open-Set Recognition** – automatically rejects unknown identities  
+- 📊 **Threshold Evaluation** – FAR / FRR based decision tuning  
+- 🧩 **Modular Pipeline** – each stage testable independently  
 
-Extract 5 facial landmarks
+---
 
-Align faces into a canonical pose (112×112)
+## 🖥️ System Requirements
 
-Generate 512-D ArcFace embeddings using ONNX Runtime
+| Component | Requirement |
+|---------|-------------|
+| Python | 3.9+ (tested on 3.11) |
+| OS | Windows / macOS / Linux |
+| Camera | Webcam |
+| RAM | ≥ 2 GB |
+| GPU | ❌ Not required |
 
-Perform open-set recognition via cosine distance
+Check Python version:
 
-Persist identities using a lightweight on-disk database
-
-Everything runs entirely on CPU, making it suitable for laptops, classrooms, and field deployments.
-
-Highlights
-
-🧠 ArcFace ONNX (ResNet-50)
-High-quality 512-dimensional embeddings with L2 normalization
-
-🖥️ CPU-Only Inference
-No CUDA, no GPU dependencies, reproducible across machines
-
-📐 5-Point Face Alignment
-Haar detection + MediaPipe landmarks → similarity transform
-
-🎥 Real-Time Multi-Face Recognition
-Stable tracking with temporal smoothing
-
-🔓 Open-Set Recognition
-Automatically rejects unknown identities
-
-📊 Threshold Evaluation Tool
-FAR / FRR analysis for principled decision boundaries
-
-🧩 Modular Architecture
-Each stage runnable and testable independently
-
-System Requirements
-Component	Requirement
-Python	3.9+ (tested on 3.11)
-OS	Windows / macOS / Linux
-Camera	USB or built-in webcam
-RAM	≥ 2 GB
-Storage	~500 MB
-
-Verify Python version:
-
+```bash
 python --version
-
-Installation
-1. Clone the Repository
+1️⃣ Clone Repository
 git clone https://github.com/Nik-ta07/-Face-Recog-arc-onnx.git
-cd Face-Recog-onnx
+cd -Face-Recog-arc-onnx
 
-2. Create & Activate Virtual Environment
+2️⃣ Create Virtual Environment
 python3.11 -m venv .venv
 
 
-macOS / Linux
-cd
-source .venv/bin/activate
-
+Activate:
 
 Windows (PowerShell)
 
 .venv\Scripts\Activate.ps1
 
-3. Install Dependencies
-python -m pip install --upgrade pip
+
+macOS / Linux
+
+source .venv/bin/activate
+
+3️⃣ Install Dependencies
+pip install --upgrade pip
 pip install -r requirements.txt
 
-
-Or manually:
-
-pip install numpy opencv-python onnxruntime scipy mediapipe tqdm protobuf
-
-ArcFace Model Setup
+🧠 ArcFace Model Setup
 
 Download the official InsightFace ArcFace ONNX model:
 
 curl -L -o buffalo_l.zip \
 https://sourceforge.net/projects/insightface.mirror/files/v0.7/buffalo_l.zip/download
 
-
-Extract and keep only the embedding model:
-
 unzip buffalo_l.zip
 cp w600k_r50.onnx models/embedder_arcface.onnx
 rm buffalo_l.zip *.onnx
 
-Project Layout
-Face-Recog-onnx/
+📁 Project Structure
+Face-Recog-arc-onnx/
 │
 ├── src/
-│   ├── camera.py        # Camera sanity check
+│   ├── camera.py        # Camera validation
 │   ├── detect.py        # Haar face detection
 │   ├── landmarks.py     # 5-point landmark extraction
 │   ├── align.py         # 112×112 face alignment
-│   ├── embed.py         # ArcFace ONNX inference
+│   ├── embed.py         # ArcFace embedding extraction
 │   ├── enroll.py        # Identity enrollment
-│   ├── evaluate.py      # FAR / FRR threshold analysis
-│   ├── recognize.py    # Live recognition pipeline
-│   └── haar_5pt.py      # Unified detector class
+│   ├── evaluate.py      # FAR / FRR threshold evaluation
+│   └── recognize.py    # Live face recognition
 │
 ├── data/
 │   ├── enroll/          # Aligned enrollment images
@@ -122,9 +89,9 @@ Face-Recog-onnx/
 ├── requirements.txt
 └── README.md
 
-Quick Start
+🚀 Quick Start
 
-Run each component independently to verify functionality:
+Test each module independently:
 
 python -m src.camera
 python -m src.detect
@@ -133,15 +100,15 @@ python -m src.align
 python -m src.embed
 
 
-Then:
+Enroll identities and start recognition:
 
 python -m src.enroll
 python -m src.evaluate
 python -m src.recognize
 
-Core Workflow
+🔄 Pipeline Overview
 Enrollment Pipeline
-Camera Frame
+Camera
  → Face Detection
  → 5-Point Landmarks
  → Alignment (112×112)
@@ -151,105 +118,10 @@ Camera Frame
  → Database Storage
 
 Recognition Pipeline
-Camera Frame
+Camera
  → Detection + Alignment
- → Embedding Extraction
+ → ArcFace Embedding
  → Cosine Distance Matching
  → Threshold Decision
  → Identity / Unknown
-
-Threshold Evaluation
-
-The evaluation tool computes genuine vs impostor distributions:
-
-Genuine = same person
-
-Impostor = different people
-
-Output includes:
-
-Mean / std / percentiles
-
-FAR / FRR sweep
-
-Suggested operating threshold
-
-Typical output:
-
-Suggested threshold (FAR ≈ 1%): dist ≈ 0.34
-Equivalent cosine similarity ≈ 0.66
-
-
-This value should be set in recognize.py.
-
-Controls (Live Recognition)
-Key	Action
-q	Quit
-r	Reload database
-+	Increase threshold
--	Decrease threshold
-d	Debug overlay
-Database Format
-face_db.npz
-
-Maps identity → 512-D embedding
-
-All vectors are L2-normalized
-
-face_db.json
-
-Metadata (names, timestamps, sample counts)
-
-Common Issues
-
-Camera not opening
-
-Try changing camera index
-
-Check OS camera permissions
-
-MediaPipe import error
-
-pip install mediapipe==0.10.32
-
-
-Model not found
-
-Confirm models/embedder_arcface.onnx exists
-
-Low accuracy
-
-Enroll more samples (20–30 recommended)
-
-Improve lighting consistency
-
-Re-run threshold evaluation
-
-Visually verify alignment output
-
-Design Notes
-
-All embeddings have unit norm
-
-Cosine similarity = dot product
-
-Distance = 1 - similarity
-
-CPU-only execution ensures deterministic behavior
-
-Each pipeline stage is replaceable
-
-References
-
-Deng et al., ArcFace: Additive Angular Margin Loss, CVPR 2019
-
-InsightFace Project
-
-MediaPipe Face Mesh
-
-ONNX Runtime
-
-License
-
-Educational and research use.
-Derived from academic face recognition coursework.
+ 
