@@ -1,0 +1,39 @@
+On branch main
+You have unmerged paths.
+  (fix conflicts and run "git commit")
+  (use "git merge --abort" to abort the merge)
+
+Changes to be committed:
+	new file:   data/db/face_db.json
+	new file:   data/db/face_db.npz
+	new file:   models/embedder_arcface.onnx
+	new file:   requirements.txt
+	new file:   src/__pycache__/camera.cpython-313.pyc
+	new file:   src/__pycache__/embed.cpython-313.pyc
+	new file:   src/__pycache__/enroll.cpython-313.pyc
+	new file:   src/__pycache__/haar_5pt.cpython-313.pyc
+
+Unmerged paths:
+  (use "git add <file>..." to mark resolution)
+	both added:      README.md
+	both added:      init_project.py
+	both added:      src/align.py
+	both added:      src/camera.py
+	both added:      src/detect.py
+	both added:      src/embed.py
+	both added:      src/enroll.py
+	both added:      src/evaluate.py
+	both added:      src/haar_5pt.py
+	both added:      src/landmarks.py
+	both added:      src/recognize.py
+
+Changes not staged for commit:
+  (use "git add/rm <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+	deleted:    src/hum.py
+	deleted:    src/verify_mp.py
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+	status_log.txt
+
