@@ -1,2 +1,0 @@
-Location: C:\Users\user\AppData\Local\Programs\Python\Python311\Lib\site-packages\mediapipe\__init__.py
-Solutions: AttributeError
