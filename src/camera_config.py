@@ -1,0 +1,4 @@
+import cv2
+
+WEBCAM_INDEX = 0
+WEBCAM_BACKEND = cv2.CAP_DSHOW
